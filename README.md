@@ -84,5 +84,12 @@ Software:
   * Priority Group = "4 bits for pre-emption priority 0 bits for subpriority"
     * (This was already set)
   * Save the `.ioc` and regenerate the code
-  
 
+## Test FreeRTOS
+
+* Create two tasks to blink the Nucleo LEDs 2 and 3
+* Leave blinking of LED 1 for failure to start the scheduler
+* No blinking of any LEDs will be a `configASSERT()` failure
+
+Now, compile and load the board. The LD2 and 3 will blink
+at different speeds.
