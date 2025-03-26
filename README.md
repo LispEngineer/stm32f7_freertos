@@ -36,3 +36,39 @@ Software:
     repository per `.gitignore`
   * Debug
   * Debugger -> Debug Probe = SEGGER J-LINK
+  
+  
+## Installing FreeRTOS
+
+* Create `ThirdParty` top level directory
+* Copy `FreeRTOS-Kernel` to this `ThirdParty` directory
+* Delete the `examples` directory from `FreeRTOS-Kernel`
+* Update `portable` subdirectory in `FreeRTOS-Kernel`
+  * Delete everything but `GCC` and `MemMang`
+  * In `GCC` subdirectory, delete everything but `ARM_CM7`
+  * In `MemMang` subdirectory, delete everything but `heap_4.c`
+* In the IDE, right-click `ThirdParty` and select Properties
+  * Ensure `Exclude resource from build` is unchecked
+* In the IDE, Project -> Properties
+  * C/C++ Build
+  * Settings
+  * Tool Settings
+  * MCU/MPU GCC Compiler
+  * Include Paths
+  * Add these:
+    * Workspace -> ThirdParty/FreeRTOS-Kernel/include
+    * Workspace -> ThirdParty/FreeRTOS-Kernel/portable/GCC/ARM_CM7/r0p1
+* In the .ioc file, we have to remove handlers that are provided by `port.c`
+  * They are: `SVC_Handler`, `PendSV_Handler`, and `SysTick_Handler`
+  * Open System Core -> NVIC
+  * Open Code Generation under Configuration
+  * In the `Generate IRQ handler` column, uncheck these rows:
+    * Pendable request for system service
+    * Time base: System tick timer
+    * System service call via SWI instruction
+  * Save the `.ioc` file and regenerate code
+  
+Get the `FreeRTOSConfig.h`
+* There do not seem to be any demos in the v202406.01 LTS anymore.
+* One potentially relevant [`.h file`](https://github.com/FreeRTOS/FreeRTOS/blob/881305dcb813c93bd71e0ec2d3374cc741dec2bd/FreeRTOS/Demo/CORTEX_M7_STM32F7_STM32756G-EVAL_IAR_Keil/FreeRTOSConfig.h)
+
