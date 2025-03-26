@@ -26,6 +26,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "FreeRTOS.h"
+#include "task.h"
 
 /* USER CODE END Includes */
 
@@ -87,6 +89,22 @@ static void MX_USB_OTG_FS_PCD_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+/** A FreeRTOS task that just blinks LD2 */
+void blink_ld2(void *param) {
+  while (1) {
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    HAL_Delay(100);
+  }
+}
+
+/** A FreeRTOS task that just blinks LD3 */
+void blink_ld3(void *param) {
+  while (1) {
+    HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+    HAL_Delay(750);
+  }
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -97,6 +115,10 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+  TaskHandle_t blink_ld2_task;
+  TaskHandle_t blink_ld3_task;
+
+  BaseType_t status;
 
   /* USER CODE END 1 */
 
@@ -123,6 +145,17 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
 
+  // Create a test task that blinks a different LED than LD1
+  status = xTaskCreate(blink_ld2, "Blink-LD2", 200, NULL, 2, &blink_ld2_task);
+  configASSERT(status == pdPASS);
+
+  status = xTaskCreate(blink_ld3, "Blink-LD3", 200, NULL, 2, &blink_ld3_task);
+  configASSERT(status == pdPASS);
+
+  // Start FreeRTOS
+  // This should never return unless there is a problem
+  vTaskStartScheduler();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -132,7 +165,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    // Prove the code works on the actual Nucleo board
+    // If LD1 is blinking, then vTaskStartScheduler didn't work
     HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
     HAL_Delay(500);
   }
