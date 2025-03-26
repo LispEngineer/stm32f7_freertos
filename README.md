@@ -28,3 +28,11 @@ Software:
 ## References
 
 * [Udemy Course](https://www.udemy.com/course/mastering-rtos-hands-on-with-freertos-arduino-and-stm32fx/)
+
+# Project Configuration
+
+* IDE Configuration
+  * NOTE: This is stored in a `.launch` file which is not in the
+    repository per `.gitignore`
+  * Debug
+  * Debugger -> Debug Probe = SEGGER J-LINK
