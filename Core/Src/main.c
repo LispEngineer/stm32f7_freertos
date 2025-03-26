@@ -93,7 +93,8 @@ static void MX_USB_OTG_FS_PCD_Init(void);
 void blink_ld2(void *param) {
   while (1) {
     HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-    HAL_Delay(100);
+    // HAL_Delay(100);
+    vTaskDelay(100);
   }
 }
 
@@ -101,7 +102,8 @@ void blink_ld2(void *param) {
 void blink_ld3(void *param) {
   while (1) {
     HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
-    HAL_Delay(750);
+    // HAL_Delay(750);
+    vTaskDelay(750);
   }
 }
 
@@ -144,6 +146,9 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
+
+  // Enable Segger SystemView
+  traceSTART();
 
   // Create a test task that blinks a different LED than LD1
   status = xTaskCreate(blink_ld2, "Blink-LD2", 200, NULL, 2, &blink_ld2_task);

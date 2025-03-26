@@ -11,19 +11,18 @@ A project to integrate the current FreeRTOS,
 which is 202406.01 LTS as of this writing,
 into an STM32F7 project to serve as a basis
 for doing the same for my existing
-[Synthesizer Project](TODO).
+[Synthesizer Project](https://github.com/LispEngineer/stm-midi-poc1-sw).
 
 ## Components used
 
 Hardware:
-
 * Board: STM Nucleo-F767ZI
-* Firmware: Segger J-Link (reflashed on the built-in ST-Link)
 
 Software:
-
 * STM32CubeIDE 1.18.0
+* [Segger J-Link OB](https://www.segger.com/products/debug-probes/j-link/models/other-j-links/st-link-on-board/) replacement for ST-Link
 * FreeRTOS 202406.01 LTS
+* Segger SystemView v3.60a
 
 ## References
 
@@ -93,3 +92,17 @@ Software:
 
 Now, compile and load the board. The LD2 and 3 will blink
 at different speeds.
+
+# Set up for Segger SystemView
+
+* [Documentation](https://kb.segger.com/FreeRTOS_with_SystemView)
+  * Install the source code to `ThirdParty/SystemView`
+  * Install the FreeRTOSV11 code there too
+  * Add the include libraries to the GCC configuration
+  * Add the define to the `FreeRTOSConfig.h`
+  * Add `traceSTART();` to `main.c`
+
+Build, load to the board (it should still work), and run
+SystemView (v3.60a in my case) to see the output.
+
+![SystemView screenshot](SystemView-screenshot.png "SystemView screenshot")

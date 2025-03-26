@@ -154,5 +154,10 @@ to exclude the API function. */
 
 #endif /* __IAR_SYSTEMS_ASM__ */
 
+/* Enable Segger SystemView
+ * See: https://kb.segger.com/FreeRTOS_with_SystemView
+ */
+#include "SEGGER_SYSVIEW_FreeRTOS.h"
+
 #endif /* FREERTOS_CONFIG_H */
 
